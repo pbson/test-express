@@ -1,8 +1,15 @@
 const express = require("express");
 const app = express();
+const appVersion = process.env.APP_VERSION || "unknown";
 const port = process.env.PORT || 3001;
 
-app.get("/", (req, res) => res.type('html').send(html));
+console.log(`Build-time APP_VERSION=${appVersion}`);
+console.log(`Runtime PORT=${port}`);
+
+app.get("/", (req, res) => {
+  console.log(`Serving request with APP_VERSION=${appVersion} PORT=${port}`);
+  return res.type('html').send(html);
+});
 
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
@@ -54,8 +61,9 @@ const html = `
   </head>
   <body>
     <section>
-      Hello from Render!
-    </section>
+      Hello from Render!<br>
+      Build-time APP_VERSION: <strong>${appVersion}</strong><br>
+      Runtime PORT: <strong>${port}</strong>
   </body>
 </html>
 `
